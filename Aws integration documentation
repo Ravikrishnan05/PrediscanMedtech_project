@@ -1,0 +1,32 @@
+# Step 1 (Preparation Only): Understanding and Preparing to Launch the GPU Server
+
+## Go to AWS EC2 console
+  - EC2 (Elastic Compute Cloud) is AWS’s service for renting virtual machines.
+  - after going to AWS EC2 click launch.
+  - Named it gpu-api-test
+  -For amazon machine image choose-(Deep Learning OSS Nvidia Driver AMI GPU PyTorch 2.7 (Ubuntu 22.04)) with (ami-0140f55e7363d9486)(64-bit (x86))
+### Choose instance type
+  - Instance type: g4dn.xlarge
+### Create or Select a Key Pair (Login Access)
+  - click create new key pair.
+  - Name: my-key
+  - Key pair type: RSA
+  - Private key file format: .pem
+  - file named my-key.pem downloaded
+  -In future we will SSH login to the server using this .pem file.
+ ### Network settings
+  - Right now leave it as it is.
+### Configure storage  
+  - Look for the field where 40 GiB is entered. changed it to 30GiB
+  - Dont change it keep is as 40GiB(Error Instance launch failed Volume of size 30GB is smaller than snapshot 'snap-0a49290e80b53b48b', expect size>= 40GB).
+again got error
+"""
+Instance launch failed
+You have requested more vCPU capacity than your current vCPU limit of 0 allows for the 
+instance bucket that the specified instance type belongs to. Please visit http://aws.amazon.com/contact-us/ec2-request to request an adjustment to this limit.
+
+i went to https://ap-south-1.console.aws.amazon.com/servicequotas/home/services/ec2/quotas
+and Clickd Running On-Demand G and VT instances and Requested 
+Clicked Request quota increase.
+Set “New limit value” to 4
+"""
