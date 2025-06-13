@@ -30,3 +30,470 @@ and Clickd Running On-Demand G and VT instances and Requested
 Clicked Request quota increase.
 Set “New limit value” to 4
 """
+
+After some time i got the 4 quota approved.
+And launched the instance.
+
+Success
+Successfully initiated launch of instance (i-068e1a8b6761c7ee0)
+
+------------------------------------------------------------------------------------------------------------
+Second part 
+Step 1: Get the Public IP of your EC2 instance-(13.201.181.219)
+
+opened window powershell
+PS C:\Users\Ravi krishnan A.M> ssh -i "C:\Users\Ravi krishnan A.M\Downloads\my-key.pem" ubuntu@13.201.181.219
+
+"""
+PS C:\Users\Ravi krishnan A.M> ssh -i "C:\Users\Ravi krishnan A.M\Downloads\my-key.pem" ubuntu@13.201.181.219
+The authenticity of host '13.201.181.219 (13.201.181.219)' can't be established.
+ED25519 key fingerprint is SHA256:QtRtW4kyUxneFVYx7cICNGjEbJgWKyiMTs+28JAh1to.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '13.201.181.219' (ED25519) to the list of known hosts.
+Welcome to Ubuntu 22.04.5 LTS (GNU/Linux 6.8.0-1029-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Fri Jun 13 04:34:10 UTC 2025
+
+  System load:  0.08               Processes:             145
+  Usage of /:   70.5% of 38.58GB   Users logged in:       0
+  Memory usage: 2%                 IPv4 address for ens5: 172.31.18.225
+  Swap usage:   0%
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+
+=============================================================================
+AMI Name: Deep Learning OSS Nvidia Driver AMI GPU PyTorch 2.7 (Ubuntu 22.04)
+Supported EC2 instances: G4dn, G5, G6, Gr6, G6e, P4, P4de, P5, P5e, P5en, P6-B200
+* To activate pre-built pytorch environment, run: 'source /opt/pytorch/bin/activate '
+NVIDIA driver version: 570.133.20
+CUDA versions available: cuda-12.8
+Default CUDA version is 12.8
+
+Release notes: https://docs.aws.amazon.com/dlami/latest/devguide/appendix-ami-release-notes.html
+AWS Deep Learning AMI Homepage: https://aws.amazon.com/machine-learning/amis/
+Developer Guide and Release Notes: https://docs.aws.amazon.com/dlami/latest/devguide/what-is-dlami.html
+Support: https://forums.aws.amazon.com/forum.jspa?forumID=263
+For a fully managed experience, check out Amazon SageMaker at https://aws.amazon.com/sagemaker
+=============================================================================
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+"""
+
+ubuntu@ip-172-31-18-225:~$ nvidia-smi
+Fri Jun 13 04:39:03 2025
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.133.20             Driver Version: 570.133.20     CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
+| N/A   28C    P8             10W /   70W |       0MiB /  15360MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+
+----------------------------------------------------------------------------------------------------------------------
+
+ubuntu@ip-172-31-18-225:~$ source /opt/pytorch/bin/activate
+((pytorch) ) ubuntu@ip-172-31-18-225:~$ pip install unsloth fastapi uvicorn "python-multipart<0.0.7"
+Collecting unsloth
+  Downloading unsloth-2025.6.2-py3-none-any.whl.metadata (47 kB)
+Requirement already satisfied: fastapi in /opt/pytorch/lib/python3.12/site-packages (0.115.12)
+Requirement already satisfied: uvicorn in /opt/pytorch/lib/python3.12/site-packages (0.34.3)
+Collecting python-multipart<0.0.7
+  Downloading python_multipart-0.0.6-py3-none-any.whl.metadata (2.5 kB)
+Collecting unsloth_zoo>=2025.6.1 (from unsloth)
+  Downloading unsloth_zoo-2025.6.1-py3-none-any.whl.metadata (8.1 kB)
+Requirement already satisfied: torch<=2.7.0,>=2.4.0 in /opt/pytorch/lib/python3.12/site-packages (from unsloth) (2.7.0+cu128)
+Collecting xformers>=0.0.27.post2 (from unsloth)
+  Downloading xformers-0.0.30-cp312-cp312-manylinux_2_28_x86_64.whl.metadata (1.2 kB)
+Collecting bitsandbytes (from unsloth)
+  Downloading bitsandbytes-0.46.0-py3-none-manylinux_2_24_x86_64.whl.metadata (10 kB)
+Requirement already satisfied: triton>=3.0.0 in /opt/pytorch/lib/python3.12/site-packages (from unsloth) (3.3.0)
+Requirement already satisfied: packaging in /opt/pytorch/lib/python3.12/site-packages (from unsloth) (24.2)
+Collecting tyro (from unsloth)
+  Downloading tyro-0.9.24-py3-none-any.whl.metadata (11 kB)
+Collecting transformers!=4.47.0,!=4.52.0,!=4.52.1,!=4.52.2,>=4.51.3 (from unsloth)
+  Downloading transformers-4.52.4-py3-none-any.whl.metadata (38 kB)
+Collecting datasets>=3.4.1 (from unsloth)
+  Downloading datasets-3.6.0-py3-none-any.whl.metadata (19 kB)
+Requirement already satisfied: sentencepiece>=0.2.0 in /opt/pytorch/lib/python3.12/site-packages (from unsloth) (0.2.0)
+Requirement already satisfied: tqdm in /opt/pytorch/lib/python3.12/site-packages (from unsloth) (4.67.1)
+Requirement already satisfied: psutil in /opt/pytorch/lib/python3.12/site-packages (from unsloth) (6.1.1)
+Requirement already satisfied: wheel>=0.42.0 in /opt/pytorch/lib/python3.12/site-packages (from unsloth) (0.45.1)
+Requirement already satisfied: numpy in /opt/pytorch/lib/python3.12/site-packages (from unsloth) (1.26.4)
+Collecting accelerate>=0.34.1 (from unsloth)
+  Downloading accelerate-1.7.0-py3-none-any.whl.metadata (19 kB)
+Collecting trl!=0.15.0,!=0.9.0,!=0.9.1,!=0.9.2,!=0.9.3,>=0.7.9 (from unsloth)
+  Downloading trl-0.18.1-py3-none-any.whl.metadata (11 kB)
+Collecting peft!=0.11.0,>=0.7.1 (from unsloth)
+  Downloading peft-0.15.2-py3-none-any.whl.metadata (13 kB)
+Requirement already satisfied: protobuf in /opt/pytorch/lib/python3.12/site-packages (from unsloth) (5.29.5)
+Collecting huggingface_hub (from unsloth)
+  Downloading huggingface_hub-0.33.0-py3-none-any.whl.metadata (14 kB)
+Collecting hf_transfer (from unsloth)
+  Downloading hf_transfer-0.1.9-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (1.7 kB)
+Collecting diffusers (from unsloth)
+  Downloading diffusers-0.33.1-py3-none-any.whl.metadata (19 kB)
+Requirement already satisfied: torchvision in /opt/pytorch/lib/python3.12/site-packages (from unsloth) (0.22.0+cu128)
+Requirement already satisfied: filelock in /opt/pytorch/lib/python3.12/site-packages (from torch<=2.7.0,>=2.4.0->unsloth) (3.16.1)
+Requirement already satisfied: typing-extensions>=4.10.0 in /opt/pytorch/lib/python3.12/site-packages (from torch<=2.7.0,>=2.4.0->unsloth) (4.14.0)
+Requirement already satisfied: setuptools in /opt/pytorch/lib/python3.12/site-packages (from torch<=2.7.0,>=2.4.0->unsloth) (80.9.0)
+Requirement already satisfied: sympy>=1.13.3 in /opt/pytorch/lib/python3.12/site-packages (from torch<=2.7.0,>=2.4.0->unsloth) (1.14.0)
+Requirement already satisfied: networkx in /opt/pytorch/lib/python3.12/site-packages (from torch<=2.7.0,>=2.4.0->unsloth) (3.5)
+Requirement already satisfied: jinja2 in /opt/pytorch/lib/python3.12/site-packages (from torch<=2.7.0,>=2.4.0->unsloth) (3.1.6)
+Requirement already satisfied: fsspec in /opt/pytorch/lib/python3.12/site-packages (from torch<=2.7.0,>=2.4.0->unsloth) (2025.5.1)
+Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.8.61 in /opt/pytorch/lib/python3.12/site-packages (from torch<=2.7.0,>=2.4.0->unsloth) (12.8.61)
+Requirement already satisfied: nvidia-cuda-runtime-cu12==12.8.57 in /opt/pytorch/lib/python3.12/site-packages (from torch<=2.7.0,>=2.4.0->unsloth) (12.8.57)
+Requirement already satisfied: nvidia-cuda-cupti-cu12==12.8.57 in /opt/pytorch/lib/python3.12/site-packages (from torch<=2.7.0,>=2.4.0->unsloth) (12.8.57)
+Requirement already satisfied: nvidia-cudnn-cu12==9.7.1.26 in /opt/pytorch/lib/python3.12/site-packages (from torch<=2.7.0,>=2.4.0->unsloth) (9.7.1.26)
+Requirement already satisfied: nvidia-cublas-cu12==12.8.3.14 in /opt/pytorch/lib/python3.12/site-packages (from torch<=2.7.0,>=2.4.0->unsloth) (12.8.3.14)
+Requirement already satisfied: nvidia-cufft-cu12==11.3.3.41 in /opt/pytorch/lib/python3.12/site-packages (from torch<=2.7.0,>=2.4.0->unsloth) (11.3.3.41)
+Requirement already satisfied: nvidia-curand-cu12==10.3.9.55 in /opt/pytorch/lib/python3.12/site-packages (from torch<=2.7.0,>=2.4.0->unsloth) (10.3.9.55)
+Requirement already satisfied: nvidia-cusolver-cu12==11.7.2.55 in /opt/pytorch/lib/python3.12/site-packages (from torch<=2.7.0,>=2.4.0->unsloth) (11.7.2.55)
+Requirement already satisfied: nvidia-cusparse-cu12==12.5.7.53 in /opt/pytorch/lib/python3.12/site-packages (from torch<=2.7.0,>=2.4.0->unsloth) (12.5.7.53)
+Requirement already satisfied: nvidia-cusparselt-cu12==0.6.3 in /opt/pytorch/lib/python3.12/site-packages (from torch<=2.7.0,>=2.4.0->unsloth) (0.6.3)
+Requirement already satisfied: nvidia-nccl-cu12==2.26.2 in /opt/pytorch/lib/python3.12/site-packages (from torch<=2.7.0,>=2.4.0->unsloth) (2.26.2)
+Requirement already satisfied: nvidia-nvtx-cu12==12.8.55 in /opt/pytorch/lib/python3.12/site-packages (from torch<=2.7.0,>=2.4.0->unsloth) (12.8.55)
+Requirement already satisfied: nvidia-nvjitlink-cu12==12.8.61 in /opt/pytorch/lib/python3.12/site-packages (from torch<=2.7.0,>=2.4.0->unsloth) (12.8.61)
+Requirement already satisfied: nvidia-cufile-cu12==1.13.0.11 in /opt/pytorch/lib/python3.12/site-packages (from torch<=2.7.0,>=2.4.0->unsloth) (1.13.0.11)
+Requirement already satisfied: starlette<0.47.0,>=0.40.0 in /opt/pytorch/lib/python3.12/site-packages (from fastapi) (0.46.2)
+Requirement already satisfied: pydantic!=1.8,!=1.8.1,!=2.0.0,!=2.0.1,!=2.1.0,<3.0.0,>=1.7.4 in /opt/pytorch/lib/python3.12/site-packages (from fastapi) (2.9.2)
+Requirement already satisfied: annotated-types>=0.6.0 in /opt/pytorch/lib/python3.12/site-packages (from pydantic!=1.8,!=1.8.1,!=2.0.0,!=2.0.1,!=2.1.0,<3.0.0,>=1.7.4->fastapi) (0.7.0)
+Requirement already satisfied: pydantic-core==2.23.4 in /opt/pytorch/lib/python3.12/site-packages (from pydantic!=1.8,!=1.8.1,!=2.0.0,!=2.0.1,!=2.1.0,<3.0.0,>=1.7.4->fastapi) (2.23.4)
+Requirement already satisfied: anyio<5,>=3.6.2 in /opt/pytorch/lib/python3.12/site-packages (from starlette<0.47.0,>=0.40.0->fastapi) (4.9.0)
+Requirement already satisfied: idna>=2.8 in /opt/pytorch/lib/python3.12/site-packages (from anyio<5,>=3.6.2->starlette<0.47.0,>=0.40.0->fastapi) (3.10)
+Requirement already satisfied: sniffio>=1.1 in /opt/pytorch/lib/python3.12/site-packages (from anyio<5,>=3.6.2->starlette<0.47.0,>=0.40.0->fastapi) (1.3.1)
+Requirement already satisfied: click>=7.0 in /opt/pytorch/lib/python3.12/site-packages (from uvicorn) (8.1.8)
+Requirement already satisfied: h11>=0.8 in /opt/pytorch/lib/python3.12/site-packages (from uvicorn) (0.16.0)
+Requirement already satisfied: pyyaml in /opt/pytorch/lib/python3.12/site-packages (from accelerate>=0.34.1->unsloth) (6.0.2)
+Collecting safetensors>=0.4.3 (from accelerate>=0.34.1->unsloth)
+  Downloading safetensors-0.5.3-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.8 kB)
+Requirement already satisfied: pyarrow>=15.0.0 in /opt/pytorch/lib/python3.12/site-packages (from datasets>=3.4.1->unsloth) (20.0.0)
+Collecting dill<0.3.9,>=0.3.0 (from datasets>=3.4.1->unsloth)
+  Downloading dill-0.3.8-py3-none-any.whl.metadata (10 kB)
+Requirement already satisfied: pandas in /opt/pytorch/lib/python3.12/site-packages (from datasets>=3.4.1->unsloth) (2.2.3)
+Requirement already satisfied: requests>=2.32.2 in /opt/pytorch/lib/python3.12/site-packages (from datasets>=3.4.1->unsloth) (2.32.3)
+Collecting xxhash (from datasets>=3.4.1->unsloth)
+  Downloading xxhash-3.5.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (12 kB)
+Collecting multiprocess<0.70.17 (from datasets>=3.4.1->unsloth)
+  Downloading multiprocess-0.70.16-py312-none-any.whl.metadata (7.2 kB)
+Collecting fsspec (from torch<=2.7.0,>=2.4.0->unsloth)
+  Downloading fsspec-2025.3.0-py3-none-any.whl.metadata (11 kB)
+Collecting aiohttp!=4.0.0a0,!=4.0.0a1 (from fsspec[http]<=2025.3.0,>=2023.1.0->datasets>=3.4.1->unsloth)
+  Downloading aiohttp-3.12.12-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.6 kB)
+Collecting aiohappyeyeballs>=2.5.0 (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.3.0,>=2023.1.0->datasets>=3.4.1->unsloth)
+  Downloading aiohappyeyeballs-2.6.1-py3-none-any.whl.metadata (5.9 kB)
+Collecting aiosignal>=1.1.2 (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.3.0,>=2023.1.0->datasets>=3.4.1->unsloth)
+  Downloading aiosignal-1.3.2-py2.py3-none-any.whl.metadata (3.8 kB)
+Requirement already satisfied: attrs>=17.3.0 in /opt/pytorch/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.3.0,>=2023.1.0->datasets>=3.4.1->unsloth) (23.2.0)
+Collecting frozenlist>=1.1.1 (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.3.0,>=2023.1.0->datasets>=3.4.1->unsloth)
+  Downloading frozenlist-1.7.0-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (18 kB)
+Collecting multidict<7.0,>=4.5 (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.3.0,>=2023.1.0->datasets>=3.4.1->unsloth)
+  Downloading multidict-6.4.4-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (5.3 kB)
+Collecting propcache>=0.2.0 (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.3.0,>=2023.1.0->datasets>=3.4.1->unsloth)
+  Downloading propcache-0.3.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (12 kB)
+Collecting yarl<2.0,>=1.17.0 (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.3.0,>=2023.1.0->datasets>=3.4.1->unsloth)
+  Downloading yarl-1.20.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (73 kB)
+Collecting hf-xet<2.0.0,>=1.1.2 (from huggingface_hub->unsloth)
+  Downloading hf_xet-1.1.3-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (879 bytes)
+Requirement already satisfied: charset-normalizer<4,>=2 in /opt/pytorch/lib/python3.12/site-packages (from requests>=2.32.2->datasets>=3.4.1->unsloth) (3.4.2)
+Requirement already satisfied: urllib3<3,>=1.21.1 in /opt/pytorch/lib/python3.12/site-packages (from requests>=2.32.2->datasets>=3.4.1->unsloth) (2.4.0)
+Requirement already satisfied: certifi>=2017.4.17 in /opt/pytorch/lib/python3.12/site-packages (from requests>=2.32.2->datasets>=3.4.1->unsloth) (2025.4.26)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in /opt/pytorch/lib/python3.12/site-packages (from sympy>=1.13.3->torch<=2.7.0,>=2.4.0->unsloth) (1.3.0)
+Requirement already satisfied: regex!=2019.12.17 in /opt/pytorch/lib/python3.12/site-packages (from transformers!=4.47.0,!=4.52.0,!=4.52.1,!=4.52.2,>=4.51.3->unsloth) (2024.11.6)
+Collecting tokenizers<0.22,>=0.21 (from transformers!=4.47.0,!=4.52.0,!=4.52.1,!=4.52.2,>=4.51.3->unsloth)
+  Downloading tokenizers-0.21.1-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.8 kB)
+Collecting protobuf (from unsloth)
+  Downloading protobuf-3.20.3-py2.py3-none-any.whl.metadata (720 bytes)
+Collecting cut_cross_entropy (from unsloth_zoo>=2025.6.1->unsloth)
+  Downloading cut_cross_entropy-25.1.1-py3-none-any.whl.metadata (9.3 kB)
+Requirement already satisfied: pillow in /opt/pytorch/lib/python3.12/site-packages (from unsloth_zoo>=2025.6.1->unsloth) (11.2.1)
+Collecting msgspec (from unsloth_zoo>=2025.6.1->unsloth)
+  Downloading msgspec-0.19.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.9 kB)
+Requirement already satisfied: importlib-metadata in /opt/pytorch/lib/python3.12/site-packages (from diffusers->unsloth) (6.11.0)
+Requirement already satisfied: zipp>=0.5 in /opt/pytorch/lib/python3.12/site-packages (from importlib-metadata->diffusers->unsloth) (3.22.0)
+Requirement already satisfied: MarkupSafe>=2.0 in /opt/pytorch/lib/python3.12/site-packages (from jinja2->torch<=2.7.0,>=2.4.0->unsloth) (3.0.2)
+Requirement already satisfied: python-dateutil>=2.8.2 in /opt/pytorch/lib/python3.12/site-packages (from pandas->datasets>=3.4.1->unsloth) (2.9.0.post0)
+Requirement already satisfied: pytz>=2020.1 in /opt/pytorch/lib/python3.12/site-packages (from pandas->datasets>=3.4.1->unsloth) (2025.2)
+Requirement already satisfied: tzdata>=2022.7 in /opt/pytorch/lib/python3.12/site-packages (from pandas->datasets>=3.4.1->unsloth) (2025.2)
+Requirement already satisfied: six>=1.5 in /opt/pytorch/lib/python3.12/site-packages (from python-dateutil>=2.8.2->pandas->datasets>=3.4.1->unsloth) (1.17.0)
+Collecting docstring-parser>=0.15 (from tyro->unsloth)
+  Downloading docstring_parser-0.16-py3-none-any.whl.metadata (3.0 kB)
+Requirement already satisfied: rich>=11.1.0 in /opt/pytorch/lib/python3.12/site-packages (from tyro->unsloth) (14.0.0)
+Collecting shtab>=1.5.6 (from tyro->unsloth)
+  Downloading shtab-1.7.2-py3-none-any.whl.metadata (7.4 kB)
+Collecting typeguard>=4.0.0 (from tyro->unsloth)
+  Downloading typeguard-4.4.3-py3-none-any.whl.metadata (3.4 kB)
+Requirement already satisfied: markdown-it-py>=2.2.0 in /opt/pytorch/lib/python3.12/site-packages (from rich>=11.1.0->tyro->unsloth) (3.0.0)
+Requirement already satisfied: pygments<3.0.0,>=2.13.0 in /opt/pytorch/lib/python3.12/site-packages (from rich>=11.1.0->tyro->unsloth) (2.19.1)
+Requirement already satisfied: mdurl~=0.1 in /opt/pytorch/lib/python3.12/site-packages (from markdown-it-py>=2.2.0->rich>=11.1.0->tyro->unsloth) (0.1.2)
+Downloading python_multipart-0.0.6-py3-none-any.whl (45 kB)
+Downloading unsloth-2025.6.2-py3-none-any.whl (276 kB)
+Downloading accelerate-1.7.0-py3-none-any.whl (362 kB)
+Downloading datasets-3.6.0-py3-none-any.whl (491 kB)
+Downloading dill-0.3.8-py3-none-any.whl (116 kB)
+Downloading fsspec-2025.3.0-py3-none-any.whl (193 kB)
+Downloading multiprocess-0.70.16-py312-none-any.whl (146 kB)
+Downloading aiohttp-3.12.12-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.7/1.7 MB 124.2 MB/s eta 0:00:00
+Downloading multidict-6.4.4-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (223 kB)
+Downloading yarl-1.20.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (355 kB)
+Downloading aiohappyeyeballs-2.6.1-py3-none-any.whl (15 kB)
+Downloading aiosignal-1.3.2-py2.py3-none-any.whl (7.6 kB)
+Downloading frozenlist-1.7.0-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (241 kB)
+Downloading huggingface_hub-0.33.0-py3-none-any.whl (514 kB)
+Downloading hf_xet-1.1.3-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (4.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.8/4.8 MB 193.4 MB/s eta 0:00:00
+Downloading peft-0.15.2-py3-none-any.whl (411 kB)
+Downloading propcache-0.3.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (224 kB)
+Downloading safetensors-0.5.3-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (471 kB)
+Downloading transformers-4.52.4-py3-none-any.whl (10.5 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.5/10.5 MB 204.1 MB/s eta 0:00:00
+Downloading tokenizers-0.21.1-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.0/3.0 MB 174.5 MB/s eta 0:00:00
+Downloading trl-0.18.1-py3-none-any.whl (366 kB)
+Downloading unsloth_zoo-2025.6.1-py3-none-any.whl (147 kB)
+Downloading protobuf-3.20.3-py2.py3-none-any.whl (162 kB)
+Downloading xformers-0.0.30-cp312-cp312-manylinux_2_28_x86_64.whl (31.5 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 31.5/31.5 MB 130.6 MB/s eta 0:00:00
+Downloading bitsandbytes-0.46.0-py3-none-manylinux_2_24_x86_64.whl (67.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.0/67.0 MB 104.8 MB/s eta 0:00:00
+Downloading cut_cross_entropy-25.1.1-py3-none-any.whl (22 kB)
+Downloading diffusers-0.33.1-py3-none-any.whl (3.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.6/3.6 MB 171.7 MB/s eta 0:00:00
+Downloading hf_transfer-0.1.9-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.6/3.6 MB 176.6 MB/s eta 0:00:00
+Downloading msgspec-0.19.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (213 kB)
+Downloading tyro-0.9.24-py3-none-any.whl (128 kB)
+Downloading docstring_parser-0.16-py3-none-any.whl (36 kB)
+Downloading shtab-1.7.2-py3-none-any.whl (14 kB)
+Downloading typeguard-4.4.3-py3-none-any.whl (34 kB)
+Downloading xxhash-3.5.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (194 kB)
+Installing collected packages: xxhash, typeguard, shtab, safetensors, python-multipart, protobuf, propcache, multidict, msgspec, hf-xet, hf_transfer, fsspec, frozenlist, docstring-parser, dill, aiohappyeyeballs, yarl, multiprocess, huggingface_hub, aiosignal, tyro, tokenizers, diffusers, aiohttp, xformers, transformers, cut_cross_entropy, bitsandbytes, accelerate, peft, datasets, trl, unsloth_zoo, unsloth
+  Attempting uninstall: protobuf
+    Found existing installation: protobuf 5.29.5
+    Uninstalling protobuf-5.29.5:
+      Successfully uninstalled protobuf-5.29.5
+  Attempting uninstall: fsspec
+    Found existing installation: fsspec 2025.5.1
+    Uninstalling fsspec-2025.5.1:
+      Successfully uninstalled fsspec-2025.5.1
+  Attempting uninstall: dill
+    Found existing installation: dill 0.4.0
+    Uninstalling dill-0.4.0:
+      Successfully uninstalled dill-0.4.0
+  Attempting uninstall: multiprocess
+    Found existing installation: multiprocess 0.70.18
+    Uninstalling multiprocess-0.70.18:
+      Successfully uninstalled multiprocess-0.70.18
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+pathos 0.3.4 requires dill>=0.4.0, but you have dill 0.3.8 which is incompatible.
+pathos 0.3.4 requires multiprocess>=0.70.18, but you have multiprocess 0.70.16 which is incompatible.
+Successfully installed accelerate-1.7.0 aiohappyeyeballs-2.6.1 aiohttp-3.12.12 aiosignal-1.3.2 bitsandbytes-0.46.0 cut_cross_entropy-25.1.1 datasets-3.6.0 diffusers-0.33.1 dill-0.3.8 docstring-parser-0.16 frozenlist-1.7.0 fsspec-2025.3.0 hf-xet-1.1.3 hf_transfer-0.1.9 huggingface_hub-0.33.0 msgspec-0.19.0 multidict-6.4.4 multiprocess-0.70.16 peft-0.15.2 propcache-0.3.2 protobuf-3.20.3 python-multipart-0.0.6 safetensors-0.5.3 shtab-1.7.2 tokenizers-0.21.1 transformers-4.52.4 trl-0.18.1 typeguard-4.4.3 tyro-0.9.24 unsloth-2025.6.2 unsloth_zoo-2025.6.1 xformers-0.0.30 xxhash-3.5.0 yarl-1.20.1
+((pytorch) ) ubuntu@ip-172-31-18-225:~$ nano app.py
+((pytorch) ) ubuntu@ip-172-31-18-225:~$ python app.py
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+🚀 [app.py] Loading model onto GPU...
+==((====))==  Unsloth 2025.6.2: Fast Gemma3 patching. Transformers: 4.52.4.
+   \\   /|    Tesla T4. Num GPUs = 1. Max memory: 14.564 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.7.0+cu128. CUDA: 7.5. CUDA Toolkit: 12.8. Triton: 3.3.0
+\        /    Bfloat16 = FALSE. FA [Xformers = 0.0.30. FA2 = False]
+ "-____-"     Free license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+Unsloth: Using float16 precision for gemma3 won't work! Using float32.
+model.safetensors: 100%|█████████████████████████████████████████████████| 4.12G/4.12G [00:58<00:00, 69.9MB/s]
+generation_config.json: 100%|████████████████████████████████████████████████| 210/210 [00:00<00:00, 1.65MB/s]
+processor_config.json: 100%|████████████████████████████████████████████████| 70.0/70.0 [00:00<00:00, 661kB/s]
+chat_template.json: 100%|████████████████████████████████████████████████| 1.61k/1.61k [00:00<00:00, 16.4MB/s]
+preprocessor_config.json: 100%|██████████████████████████████████████████████| 570/570 [00:00<00:00, 5.73MB/s]
+Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+tokenizer_config.json: 100%|█████████████████████████████████████████████| 1.16M/1.16M [00:00<00:00, 5.45MB/s]
+tokenizer.model: 100%|███████████████████████████████████████████████████| 4.69M/4.69M [00:01<00:00, 3.85MB/s]
+tokenizer.json: 100%|████████████████████████████████████████████████████| 33.4M/33.4M [00:01<00:00, 28.2MB/s]
+added_tokens.json: 100%|████████████████████████████████████████████████████| 35.0/35.0 [00:00<00:00, 369kB/s]
+special_tokens_map.json: 100%|███████████████████████████████████████████████| 670/670 [00:00<00:00, 9.09MB/s]
+❌ [app.py] FATAL: Could not load model. Error: You are trying to access a gated repo.
+Make sure to have access to it at https://huggingface.co/google/medgemma-4b-it.
+401 Client Error. (Request ID: Root=1-684bb074-0ddadb085e2696f86f7bc757;de11d3db-38cc-4d4a-8035-9e8afda7253d)
+
+Cannot access gated repo for url https://huggingface.co/google/medgemma-4b-it/resolve/main/config.json.
+Access to model google/medgemma-4b-it is restricted. You must have access to it and be authenticated to access it. Please log in.
+((pytorch) ) ubuntu@ip-172-31-18-225:~$ huggingface-cli login
+
+    _|    _|  _|    _|    _|_|_|    _|_|_|  _|_|_|  _|      _|    _|_|_|      _|_|_|_|    _|_|      _|_|_|  _|_|_|_|
+    _|    _|  _|    _|  _|        _|          _|    _|_|    _|  _|            _|        _|    _|  _|        _|
+    _|_|_|_|  _|    _|  _|  _|_|  _|  _|_|    _|    _|  _|  _|  _|  _|_|      _|_|_|    _|_|_|_|  _|        _|_|_|
+    _|    _|  _|    _|  _|    _|  _|    _|    _|    _|    _|_|  _|    _|      _|        _|    _|  _|        _|
+    _|    _|    _|_|      _|_|_|    _|_|_|  _|_|_|  _|      _|    _|_|_|      _|        _|    _|    _|_|_|  _|_|_|_|
+
+    To log in, `huggingface_hub` requires a token generated from https://huggingface.co/settings/tokens .
+Enter your token (input will not be visible):
+Add token as git credential? (Y/n) Y
+Token is valid (permission: read).
+The token `RK` has been saved to /home/ubuntu/.cache/huggingface/stored_tokens
+Cannot authenticate through git-credential as no helper is defined on your machine.
+You might have to re-authenticate when pushing to the Hugging Face Hub.
+Run the following command in your terminal in case you want to set the 'store' credential helper as default.
+
+git config --global credential.helper store
+
+Read https://git-scm.com/book/en/v2/Git-Tools-Credential-Storage for more details.
+Token has not been saved to git credential helper.
+Your token has been saved to /home/ubuntu/.cache/huggingface/token
+Login successful.
+The current active token is: `RK`
+((pytorch) ) ubuntu@ip-172-31-18-225:~$ python app.py
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+🚀 [app.py] Loading model onto GPU...
+==((====))==  Unsloth 2025.6.2: Fast Gemma3 patching. Transformers: 4.52.4.
+   \\   /|    Tesla T4. Num GPUs = 1. Max memory: 14.564 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.7.0+cu128. CUDA: 7.5. CUDA Toolkit: 12.8. Triton: 3.3.0
+\        /    Bfloat16 = FALSE. FA [Xformers = 0.0.30. FA2 = False]
+ "-____-"     Free license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+Unsloth: Using float16 precision for gemma3 won't work! Using float32.
+Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+processor_config.json: 100%|████████████████████████████████████████████████| 70.0/70.0 [00:00<00:00, 818kB/s]
+chat_template.jinja: 100%|███████████████████████████████████████████████| 1.53k/1.53k [00:00<00:00, 20.1MB/s]
+preprocessor_config.json: 100%|██████████████████████████████████████████████| 570/570 [00:00<00:00, 7.94MB/s]
+tokenizer_config.json: 100%|█████████████████████████████████████████████| 1.16M/1.16M [00:00<00:00, 1.88MB/s]
+tokenizer.model: 100%|████████████████████████████████████████████████████| 4.69M/4.69M [00:00<00:00, 234MB/s]
+tokenizer.json: 100%|█████████████████████████████████████████████████████| 33.4M/33.4M [00:00<00:00, 350MB/s]
+added_tokens.json: 100%|████████████████████████████████████████████████████| 35.0/35.0 [00:00<00:00, 454kB/s]
+special_tokens_map.json: 100%|███████████████████████████████████████████████| 662/662 [00:00<00:00, 9.19MB/s]
+✅ [app.py] Model loaded successfully onto GPU!
+INFO:     Started server process [1962]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+
+Completed upto this 
+
+then when to vscode and created the test.py and tried running it
+
+PS C:\Users\Ravi krishnan A.M> python "C:\Users\Ravi krishnan A.M\Downloads\test.py"
+Sending request to your AWS server at http://13.201.181.219:8000/generate...
+ ERROR: The request failed. Here's why: HTTPConnectionPool(host='13.201.181.219', port=8000): Max retries exceeded with url: /generate (Caused by ConnectTimeoutError(<urllib3.connection.HTTPConnection object at 0x000001B7D7A07A10>, 'Connection to 13.201.181.219 timed out. (connect timeout=120)'))
+PS C:\Users\Ravi krishnan A.M> 
+
+The Cause: This is almost certainly a Firewall issue.
+When you launched the EC2 instance, we configured the Security Group (which is a firewall) to allow traffic on port 8000 only from "My IP".
+It is very likely that your home internet's public IP address has changed since you created the server. This can happen if your Internet Service Provider assigns you a dynamic IP, or if you connected from a different network (e.g., switched from Wi-Fi to a mobile hotspot).
+
+The Solution: Update the Firewall (Security Group)
+We need to tell the AWS firewall to allow traffic from your new current IP address.
+
+found my ip using ipconfig in cmd
+
+my ip is 
+C:\Users\Ravi krishnan A.M>ipconfig
+
+Windows IP Configuration
+
+
+Wireless LAN adapter Wi-Fi:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . :
+
+Wireless LAN adapter Local Area Connection* 3:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . :
+
+Wireless LAN adapter Local Area Connection* 4:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . :
+
+Ethernet adapter Ethernet:
+
+   Connection-specific DNS Suffix  . :
+   Link-local IPv6 Address . . . . . : fe80::40cc:6f13:a27d:a0e5%7
+   IPv4 Address. . . . . . . . . . . : 172.17.235.78
+   Subnet Mask . . . . . . . . . . . : 255.255.0.0
+   Default Gateway . . . . . . . . . : 172.17.255.250
+
+--------------------------------------------------------------------------------------------------------------
+
+Now i went to EC2 and choosen Network and secruity and choosen Security groups
+
+Excellent. You have correctly navigated to the Security Groups list. This table shows all the "firewalls" in your account. Now you just need to identify the correct one and edit it.
+Based on the information you provided, here's how to proceed:
+Step 1: Identify the Correct Security Group
+Your server is the one you launched most recently. The security groups in your list are named:
+security-group-for-inbound-nfs... (These are for SageMaker, not our EC2 instance. Ignore them.)
+security-group-for-outbound-nfs... (Also SageMaker. Ignore.)
+launch-wizard-2 (Created on June 13th)
+launch-wizard-1 (Created on June 12th)
+default
+The one you want is launch-wizard-2, because its creation date (2025-06-13T04:17:04.972Z) matches when you launched your gpu-api-test instance. This is the security group that AWS created automatically for that launch.
+Step 2: Select and Edit the Inbound Rules
+In the list, click the checkbox next to launch-wizard-2.
+After selecting it, a details panel will appear at the bottom of the screen. Click on the "Inbound rules" tab in that panel.
+Click the "Edit inbound rules" button.
+Step 3: Add Your Current IP Address
+You will now see the rules editor. It should have one rule for SSH on port 22. We need to add a new rule for your API on port 8000.
+Click the "Add rule" button at the bottom.
+A new, blank rule will appear. Fill it in like this:
+Type: In the dropdown, select Custom TCP.
+Port range: Type 8000.
+Source: This is the most important part. Click the dropdown and select My IP. AWS will automatically detect and fill in your current public IP address (e.g., 99.88.77.66/32).
+Click the "Save rules" button.
+Here's a visual guide of what the new rule should look like before you save:
+Type	Protocol	Port range	Source	Description - optional
+SSH	TCP	22	My IP	(existing rule)
+Custom TCP	TCP	8000	My IP	(the new rule you add)
+
+
+this is done and saved 
+
+-------------------------------------------------------------------------------
+
+PS C:\Users\Ravi krishnan A.M> python "C:\Users\Ravi krishnan A.M\Downloads\test.py"
+Sending request to your AWS server at http://13.201.181.219:8000/generate...
+ ERROR: The request failed. Here's why: 500 Server Error: Internal Server Error for url: http://13.201.181.219:8000/generate
+
+
+Now no firewall issue.It recieved but the model is crashed.
+This is due to the improper version of transformer and unsloth.I have solved this previously using github issues.
+
+The Solution
+
+Step 1: Stop the Current Server
+Go to your AWS server terminal (the one connected via SSH where the error is showing) and press Ctrl+C. This will stop the broken server.
+Step 2: Uninstall the Bad Libraries
+We need to remove the newest, buggy versions of unsloth and transformers.
+
+
