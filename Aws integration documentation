@@ -479,7 +479,7 @@ Custom TCP	TCP	8000	My IP	(the new rule you add)
 
 this is done and saved 
 
--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------
 
 PS C:\Users\Ravi krishnan A.M> python "C:\Users\Ravi krishnan A.M\Downloads\test.py"
 Sending request to your AWS server at http://13.201.181.219:8000/generate...
@@ -496,4 +496,307 @@ Go to your AWS server terminal (the one connected via SSH where the error is sho
 Step 2: Uninstall the Bad Libraries
 We need to remove the newest, buggy versions of unsloth and transformers.
 
+--------------------------------------------------------------------------------------------------------------------------------------
+Came to library if network ip changed i shouldve gone to networks and added this ip also,but it didnt change.
 
+i have opend the windows power shell newly.
+
+execute the following to start the server.
+
+PS C:\Users\Ravi krishnan A.M> ssh -i "C:\Users\Ravi krishnan A.M\Downloads\my-key.pem" ubuntu@13.201.181.219
+Welcome to Ubuntu 22.04.5 LTS (GNU/Linux 6.8.0-1029-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Fri Jun 13 09:14:44 UTC 2025
+
+  System load:  0.0                Processes:             145
+  Usage of /:   92.5% of 38.58GB   Users logged in:       0
+  Memory usage: 5%                 IPv4 address for ens5: 172.31.18.225
+  Swap usage:   0%
+
+  => / is using 92.5% of 38.58GB
+
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+New release '24.04.2 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+
+=============================================================================
+AMI Name: Deep Learning OSS Nvidia Driver AMI GPU PyTorch 2.7 (Ubuntu 22.04)
+Supported EC2 instances: G4dn, G5, G6, Gr6, G6e, P4, P4de, P5, P5e, P5en, P6-B200
+* To activate pre-built pytorch environment, run: 'source /opt/pytorch/bin/activate '
+NVIDIA driver version: 570.133.20
+CUDA versions available: cuda-12.8
+Default CUDA version is 12.8
+
+Release notes: https://docs.aws.amazon.com/dlami/latest/devguide/appendix-ami-release-notes.html
+AWS Deep Learning AMI Homepage: https://aws.amazon.com/machine-learning/amis/
+Developer Guide and Release Notes: https://docs.aws.amazon.com/dlami/latest/devguide/what-is-dlami.html
+Support: https://forums.aws.amazon.com/forum.jspa?forumID=263
+For a fully managed experience, check out Amazon SageMaker at https://aws.amazon.com/sagemaker
+=============================================================================
+Last login: Fri Jun 13 04:34:13 2025 from 137.97.182.162
+ubuntu@ip-172-31-18-225:~$ nvidia-smi
+Fri Jun 13 09:15:43 2025
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.133.20             Driver Version: 570.133.20     CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
+| N/A   28C    P8              9W /   70W |       0MiB /  15360MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+ubuntu@ip-172-31-18-225:~$ source /opt/pytorch/bin/activate
+((pytorch) ) ubuntu@ip-172-31-18-225:~$ python app.py
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+🚀 [app.py] Loading model onto GPU...
+==((====))==  Unsloth 2025.6.2: Fast Gemma3 patching. Transformers: 4.52.4.
+   \\   /|    Tesla T4. Num GPUs = 1. Max memory: 14.564 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.7.0+cu128. CUDA: 7.5. CUDA Toolkit: 12.8. Triton: 3.3.0
+\        /    Bfloat16 = FALSE. FA [Xformers = 0.0.30. FA2 = False]
+ "-____-"     Free license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+Unsloth: Using float16 precision for gemma3 won't work! Using float32.
+Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+✅ [app.py] Model loaded successfully onto GPU!
+INFO:     Started server process [2650]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+You have set `compile_config`, but we are unable to meet the criteria for compilation. Compilation will be skipped.
+Traceback (most recent call last):
+  File "/opt/pytorch/lib/python3.12/site-packages/unsloth/models/vision.py", line 226, in unsloth_base_fast_generate
+    output = self._old_generate(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/pytorch/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/pytorch/lib/python3.12/site-packages/transformers/generation/utils.py", line 2597, in generate
+    result = self._sample(
+             ^^^^^^^^^^^^^
+  File "/opt/pytorch/lib/python3.12/site-packages/transformers/generation/utils.py", line 3557, in _sample
+    outputs = self(**model_inputs, return_dict=True)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/pytorch/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/pytorch/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/pytorch/lib/python3.12/site-packages/unsloth_zoo/temporary_patches/gemma.py", line 384, in forward
+    loss = outputs.loss
+           ^^^^^^^^^^^^
+AttributeError: 'Gemma3ModelOutputWithPast' object has no attribute 'loss'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/app.py", line 50, in generate
+    generated_ids = model.generate(**inputs, max_new_tokens=512, pad_token_id=tokenizer.pad_token_id)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/pytorch/lib/python3.12/site-packages/unsloth/models/vision.py", line 231, in unsloth_base_fast_generate
+    output = self._old_generate(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/pytorch/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/pytorch/lib/python3.12/site-packages/transformers/generation/utils.py", line 2597, in generate
+    result = self._sample(
+             ^^^^^^^^^^^^^
+  File "/opt/pytorch/lib/python3.12/site-packages/transformers/generation/utils.py", line 3557, in _sample
+    outputs = self(**model_inputs, return_dict=True)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/pytorch/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/pytorch/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/pytorch/lib/python3.12/site-packages/unsloth_zoo/temporary_patches/gemma.py", line 384, in forward
+    loss = outputs.loss
+           ^^^^^^^^^^^^
+AttributeError: 'Gemma3ModelOutputWithPast' object has no attribute 'loss'
+
+INFO:     137.97.182.162:52487 - "POST /generate HTTP/1.1" 500 Internal Server Error
+lsof -t -i:8000 | xargs -r kill -9
+^CINFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2650]
+((pytorch) ) ubuntu@ip-172-31-18-225:~$ lsof -t -i:8000 | xargs -r kill -9
+((pytorch) ) ubuntu@ip-172-31-18-225:~$ pip uninstall -y unsloth unsloth_zoo transformers
+Found existing installation: unsloth 2025.6.2
+Uninstalling unsloth-2025.6.2:
+  Successfully uninstalled unsloth-2025.6.2
+Found existing installation: unsloth_zoo 2025.6.1
+Uninstalling unsloth_zoo-2025.6.1:
+  Successfully uninstalled unsloth_zoo-2025.6.1
+Found existing installation: transformers 4.52.4
+Uninstalling transformers-4.52.4:
+  Successfully uninstalled transformers-4.52.4
+((pytorch) ) ubuntu@ip-172-31-18-225:~$ pip install "unsloth==2025.5.7" "unsloth-zoo==2025.5.8" "transformers==4.51.3"
+Collecting unsloth==2025.5.7
+  Downloading unsloth-2025.5.7-py3-none-any.whl.metadata (47 kB)
+Collecting unsloth-zoo==2025.5.8
+  Downloading unsloth_zoo-2025.5.8-py3-none-any.whl.metadata (8.0 kB)
+Collecting transformers==4.51.3
+  Downloading transformers-4.51.3-py3-none-any.whl.metadata (38 kB)
+Requirement already satisfied: torch>=2.4.0 in /opt/pytorch/lib/python3.12/site-packages (from unsloth==2025.5.7) (2.7.0+cu128)
+Requirement already satisfied: xformers>=0.0.27.post2 in /opt/pytorch/lib/python3.12/site-packages (from unsloth==2025.5.7) (0.0.30)
+Requirement already satisfied: bitsandbytes in /opt/pytorch/lib/python3.12/site-packages (from unsloth==2025.5.7) (0.46.0)
+Requirement already satisfied: triton>=3.0.0 in /opt/pytorch/lib/python3.12/site-packages (from unsloth==2025.5.7) (3.3.0)
+Requirement already satisfied: packaging in /opt/pytorch/lib/python3.12/site-packages (from unsloth==2025.5.7) (24.2)
+Requirement already satisfied: tyro in /opt/pytorch/lib/python3.12/site-packages (from unsloth==2025.5.7) (0.9.24)
+Requirement already satisfied: datasets>=3.4.1 in /opt/pytorch/lib/python3.12/site-packages (from unsloth==2025.5.7) (3.6.0)
+Requirement already satisfied: sentencepiece>=0.2.0 in /opt/pytorch/lib/python3.12/site-packages (from unsloth==2025.5.7) (0.2.0)
+Requirement already satisfied: tqdm in /opt/pytorch/lib/python3.12/site-packages (from unsloth==2025.5.7) (4.67.1)
+Requirement already satisfied: psutil in /opt/pytorch/lib/python3.12/site-packages (from unsloth==2025.5.7) (6.1.1)
+Requirement already satisfied: wheel>=0.42.0 in /opt/pytorch/lib/python3.12/site-packages (from unsloth==2025.5.7) (0.45.1)
+Requirement already satisfied: numpy in /opt/pytorch/lib/python3.12/site-packages (from unsloth==2025.5.7) (1.26.4)
+Requirement already satisfied: accelerate>=0.34.1 in /opt/pytorch/lib/python3.12/site-packages (from unsloth==2025.5.7) (1.7.0)
+Collecting trl!=0.15.0,!=0.9.0,!=0.9.1,!=0.9.2,!=0.9.3,<=0.15.2,>=0.7.9 (from unsloth==2025.5.7)
+  Downloading trl-0.15.2-py3-none-any.whl.metadata (11 kB)
+Requirement already satisfied: peft!=0.11.0,>=0.7.1 in /opt/pytorch/lib/python3.12/site-packages (from unsloth==2025.5.7) (0.15.2)
+Requirement already satisfied: protobuf<4.0.0 in /opt/pytorch/lib/python3.12/site-packages (from unsloth==2025.5.7) (3.20.3)
+Requirement already satisfied: huggingface_hub in /opt/pytorch/lib/python3.12/site-packages (from unsloth==2025.5.7) (0.33.0)
+Requirement already satisfied: hf_transfer in /opt/pytorch/lib/python3.12/site-packages (from unsloth==2025.5.7) (0.1.9)
+Requirement already satisfied: diffusers in /opt/pytorch/lib/python3.12/site-packages (from unsloth==2025.5.7) (0.33.1)
+Requirement already satisfied: torchvision in /opt/pytorch/lib/python3.12/site-packages (from unsloth==2025.5.7) (0.22.0+cu128)
+Requirement already satisfied: cut_cross_entropy in /opt/pytorch/lib/python3.12/site-packages (from unsloth-zoo==2025.5.8) (25.1.1)
+Requirement already satisfied: pillow in /opt/pytorch/lib/python3.12/site-packages (from unsloth-zoo==2025.5.8) (11.2.1)
+Requirement already satisfied: regex in /opt/pytorch/lib/python3.12/site-packages (from unsloth-zoo==2025.5.8) (2024.11.6)
+Requirement already satisfied: msgspec in /opt/pytorch/lib/python3.12/site-packages (from unsloth-zoo==2025.5.8) (0.19.0)
+Requirement already satisfied: filelock in /opt/pytorch/lib/python3.12/site-packages (from transformers==4.51.3) (3.16.1)
+Requirement already satisfied: pyyaml>=5.1 in /opt/pytorch/lib/python3.12/site-packages (from transformers==4.51.3) (6.0.2)
+Requirement already satisfied: requests in /opt/pytorch/lib/python3.12/site-packages (from transformers==4.51.3) (2.32.3)
+Requirement already satisfied: tokenizers<0.22,>=0.21 in /opt/pytorch/lib/python3.12/site-packages (from transformers==4.51.3) (0.21.1)
+Requirement already satisfied: safetensors>=0.4.3 in /opt/pytorch/lib/python3.12/site-packages (from transformers==4.51.3) (0.5.3)
+Requirement already satisfied: fsspec>=2023.5.0 in /opt/pytorch/lib/python3.12/site-packages (from huggingface_hub->unsloth==2025.5.7) (2025.3.0)
+Requirement already satisfied: typing-extensions>=3.7.4.3 in /opt/pytorch/lib/python3.12/site-packages (from huggingface_hub->unsloth==2025.5.7) (4.14.0)
+Requirement already satisfied: hf-xet<2.0.0,>=1.1.2 in /opt/pytorch/lib/python3.12/site-packages (from huggingface_hub->unsloth==2025.5.7) (1.1.3)
+Requirement already satisfied: rich in /opt/pytorch/lib/python3.12/site-packages (from trl!=0.15.0,!=0.9.0,!=0.9.1,!=0.9.2,!=0.9.3,<=0.15.2,>=0.7.9->unsloth==2025.5.7) (14.0.0)
+Requirement already satisfied: pyarrow>=15.0.0 in /opt/pytorch/lib/python3.12/site-packages (from datasets>=3.4.1->unsloth==2025.5.7) (20.0.0)
+Requirement already satisfied: dill<0.3.9,>=0.3.0 in /opt/pytorch/lib/python3.12/site-packages (from datasets>=3.4.1->unsloth==2025.5.7) (0.3.8)
+Requirement already satisfied: pandas in /opt/pytorch/lib/python3.12/site-packages (from datasets>=3.4.1->unsloth==2025.5.7) (2.2.3)
+Requirement already satisfied: xxhash in /opt/pytorch/lib/python3.12/site-packages (from datasets>=3.4.1->unsloth==2025.5.7) (3.5.0)
+Requirement already satisfied: multiprocess<0.70.17 in /opt/pytorch/lib/python3.12/site-packages (from datasets>=3.4.1->unsloth==2025.5.7) (0.70.16)
+Requirement already satisfied: aiohttp!=4.0.0a0,!=4.0.0a1 in /opt/pytorch/lib/python3.12/site-packages (from fsspec[http]<=2025.3.0,>=2023.1.0->datasets>=3.4.1->unsloth==2025.5.7) (3.12.12)
+Requirement already satisfied: aiohappyeyeballs>=2.5.0 in /opt/pytorch/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.3.0,>=2023.1.0->datasets>=3.4.1->unsloth==2025.5.7) (2.6.1)
+Requirement already satisfied: aiosignal>=1.1.2 in /opt/pytorch/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.3.0,>=2023.1.0->datasets>=3.4.1->unsloth==2025.5.7) (1.3.2)
+Requirement already satisfied: attrs>=17.3.0 in /opt/pytorch/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.3.0,>=2023.1.0->datasets>=3.4.1->unsloth==2025.5.7) (23.2.0)
+Requirement already satisfied: frozenlist>=1.1.1 in /opt/pytorch/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.3.0,>=2023.1.0->datasets>=3.4.1->unsloth==2025.5.7) (1.7.0)
+Requirement already satisfied: multidict<7.0,>=4.5 in /opt/pytorch/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.3.0,>=2023.1.0->datasets>=3.4.1->unsloth==2025.5.7) (6.4.4)
+Requirement already satisfied: propcache>=0.2.0 in /opt/pytorch/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.3.0,>=2023.1.0->datasets>=3.4.1->unsloth==2025.5.7) (0.3.2)
+Requirement already satisfied: yarl<2.0,>=1.17.0 in /opt/pytorch/lib/python3.12/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.3.0,>=2023.1.0->datasets>=3.4.1->unsloth==2025.5.7) (1.20.1)
+Requirement already satisfied: idna>=2.0 in /opt/pytorch/lib/python3.12/site-packages (from yarl<2.0,>=1.17.0->aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.3.0,>=2023.1.0->datasets>=3.4.1->unsloth==2025.5.7) (3.10)
+Requirement already satisfied: charset-normalizer<4,>=2 in /opt/pytorch/lib/python3.12/site-packages (from requests->transformers==4.51.3) (3.4.2)
+Requirement already satisfied: urllib3<3,>=1.21.1 in /opt/pytorch/lib/python3.12/site-packages (from requests->transformers==4.51.3) (2.4.0)
+Requirement already satisfied: certifi>=2017.4.17 in /opt/pytorch/lib/python3.12/site-packages (from requests->transformers==4.51.3) (2025.4.26)
+Requirement already satisfied: setuptools in /opt/pytorch/lib/python3.12/site-packages (from torch>=2.4.0->unsloth==2025.5.7) (80.9.0)
+Requirement already satisfied: sympy>=1.13.3 in /opt/pytorch/lib/python3.12/site-packages (from torch>=2.4.0->unsloth==2025.5.7) (1.14.0)
+Requirement already satisfied: networkx in /opt/pytorch/lib/python3.12/site-packages (from torch>=2.4.0->unsloth==2025.5.7) (3.5)
+Requirement already satisfied: jinja2 in /opt/pytorch/lib/python3.12/site-packages (from torch>=2.4.0->unsloth==2025.5.7) (3.1.6)
+Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.8.61 in /opt/pytorch/lib/python3.12/site-packages (from torch>=2.4.0->unsloth==2025.5.7) (12.8.61)
+Requirement already satisfied: nvidia-cuda-runtime-cu12==12.8.57 in /opt/pytorch/lib/python3.12/site-packages (from torch>=2.4.0->unsloth==2025.5.7) (12.8.57)
+Requirement already satisfied: nvidia-cuda-cupti-cu12==12.8.57 in /opt/pytorch/lib/python3.12/site-packages (from torch>=2.4.0->unsloth==2025.5.7) (12.8.57)
+Requirement already satisfied: nvidia-cudnn-cu12==9.7.1.26 in /opt/pytorch/lib/python3.12/site-packages (from torch>=2.4.0->unsloth==2025.5.7) (9.7.1.26)
+Requirement already satisfied: nvidia-cublas-cu12==12.8.3.14 in /opt/pytorch/lib/python3.12/site-packages (from torch>=2.4.0->unsloth==2025.5.7) (12.8.3.14)
+Requirement already satisfied: nvidia-cufft-cu12==11.3.3.41 in /opt/pytorch/lib/python3.12/site-packages (from torch>=2.4.0->unsloth==2025.5.7) (11.3.3.41)
+Requirement already satisfied: nvidia-curand-cu12==10.3.9.55 in /opt/pytorch/lib/python3.12/site-packages (from torch>=2.4.0->unsloth==2025.5.7) (10.3.9.55)
+Requirement already satisfied: nvidia-cusolver-cu12==11.7.2.55 in /opt/pytorch/lib/python3.12/site-packages (from torch>=2.4.0->unsloth==2025.5.7) (11.7.2.55)
+Requirement already satisfied: nvidia-cusparse-cu12==12.5.7.53 in /opt/pytorch/lib/python3.12/site-packages (from torch>=2.4.0->unsloth==2025.5.7) (12.5.7.53)
+Requirement already satisfied: nvidia-cusparselt-cu12==0.6.3 in /opt/pytorch/lib/python3.12/site-packages (from torch>=2.4.0->unsloth==2025.5.7) (0.6.3)
+Requirement already satisfied: nvidia-nccl-cu12==2.26.2 in /opt/pytorch/lib/python3.12/site-packages (from torch>=2.4.0->unsloth==2025.5.7) (2.26.2)
+Requirement already satisfied: nvidia-nvtx-cu12==12.8.55 in /opt/pytorch/lib/python3.12/site-packages (from torch>=2.4.0->unsloth==2025.5.7) (12.8.55)
+Requirement already satisfied: nvidia-nvjitlink-cu12==12.8.61 in /opt/pytorch/lib/python3.12/site-packages (from torch>=2.4.0->unsloth==2025.5.7) (12.8.61)
+Requirement already satisfied: nvidia-cufile-cu12==1.13.0.11 in /opt/pytorch/lib/python3.12/site-packages (from torch>=2.4.0->unsloth==2025.5.7) (1.13.0.11)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in /opt/pytorch/lib/python3.12/site-packages (from sympy>=1.13.3->torch>=2.4.0->unsloth==2025.5.7) (1.3.0)
+Requirement already satisfied: importlib-metadata in /opt/pytorch/lib/python3.12/site-packages (from diffusers->unsloth==2025.5.7) (6.11.0)
+Requirement already satisfied: zipp>=0.5 in /opt/pytorch/lib/python3.12/site-packages (from importlib-metadata->diffusers->unsloth==2025.5.7) (3.22.0)
+Requirement already satisfied: MarkupSafe>=2.0 in /opt/pytorch/lib/python3.12/site-packages (from jinja2->torch>=2.4.0->unsloth==2025.5.7) (3.0.2)
+Requirement already satisfied: python-dateutil>=2.8.2 in /opt/pytorch/lib/python3.12/site-packages (from pandas->datasets>=3.4.1->unsloth==2025.5.7) (2.9.0.post0)
+Requirement already satisfied: pytz>=2020.1 in /opt/pytorch/lib/python3.12/site-packages (from pandas->datasets>=3.4.1->unsloth==2025.5.7) (2025.2)
+Requirement already satisfied: tzdata>=2022.7 in /opt/pytorch/lib/python3.12/site-packages (from pandas->datasets>=3.4.1->unsloth==2025.5.7) (2025.2)
+Requirement already satisfied: six>=1.5 in /opt/pytorch/lib/python3.12/site-packages (from python-dateutil>=2.8.2->pandas->datasets>=3.4.1->unsloth==2025.5.7) (1.17.0)
+Requirement already satisfied: markdown-it-py>=2.2.0 in /opt/pytorch/lib/python3.12/site-packages (from rich->trl!=0.15.0,!=0.9.0,!=0.9.1,!=0.9.2,!=0.9.3,<=0.15.2,>=0.7.9->unsloth==2025.5.7) (3.0.0)
+Requirement already satisfied: pygments<3.0.0,>=2.13.0 in /opt/pytorch/lib/python3.12/site-packages (from rich->trl!=0.15.0,!=0.9.0,!=0.9.1,!=0.9.2,!=0.9.3,<=0.15.2,>=0.7.9->unsloth==2025.5.7) (2.19.1)
+Requirement already satisfied: mdurl~=0.1 in /opt/pytorch/lib/python3.12/site-packages (from markdown-it-py>=2.2.0->rich->trl!=0.15.0,!=0.9.0,!=0.9.1,!=0.9.2,!=0.9.3,<=0.15.2,>=0.7.9->unsloth==2025.5.7) (0.1.2)
+Requirement already satisfied: docstring-parser>=0.15 in /opt/pytorch/lib/python3.12/site-packages (from tyro->unsloth==2025.5.7) (0.16)
+Requirement already satisfied: shtab>=1.5.6 in /opt/pytorch/lib/python3.12/site-packages (from tyro->unsloth==2025.5.7) (1.7.2)
+Requirement already satisfied: typeguard>=4.0.0 in /opt/pytorch/lib/python3.12/site-packages (from tyro->unsloth==2025.5.7) (4.4.3)
+Downloading unsloth-2025.5.7-py3-none-any.whl (265 kB)
+Downloading unsloth_zoo-2025.5.8-py3-none-any.whl (146 kB)
+Downloading transformers-4.51.3-py3-none-any.whl (10.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.4/10.4 MB 158.4 MB/s eta 0:00:00
+Downloading trl-0.15.2-py3-none-any.whl (318 kB)
+Installing collected packages: transformers, trl, unsloth-zoo, unsloth
+  Attempting uninstall: trl
+    Found existing installation: trl 0.18.1
+    Uninstalling trl-0.18.1:
+      Successfully uninstalled trl-0.18.1
+Successfully installed transformers-4.51.3 trl-0.15.2 unsloth-2025.5.7 unsloth-zoo-2025.5.8
+((pytorch) ) ubuntu@ip-172-31-18-225:~$ python app.py
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+🚀 [app.py] Loading model onto GPU...
+==((====))==  Unsloth 2025.5.7: Fast Gemma3 patching. Transformers: 4.51.3.
+   \\   /|    Tesla T4. Num GPUs = 1. Max memory: 14.564 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.7.0+cu128. CUDA: 7.5. CUDA Toolkit: 12.8. Triton: 3.3.0
+\        /    Bfloat16 = FALSE. FA [Xformers = 0.0.30. FA2 = False]
+ "-____-"     Free license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+Unsloth: Using float16 precision for gemma3 won't work! Using float32.
+Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+✅ [app.py] Model loaded successfully onto GPU!
+INFO:     Started server process [2721]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     137.97.182.162:52578 - "POST /generate HTTP/1.1" 200 OK.
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+Server started.
+
+i am the following code in vs code to test it.
+
+PS C:\Users\Ravi krishnan A.M> python "C:\Users\Ravi krishnan A.M\Downloads\test.py"
+Sending request to your AWS server at http://13.201.181.219:8000/generate...
+
+ Success! Got a response from the server.
+Model's Analysis:
+{'response': "user\n\n\n\n\nWhat are the key findings in this fundus image?\nmodel\nBased on the image, the key findings are:\n\n*  
+**Extensive retinal hemorrhages:** There are numerous bright red spots throughout the retina, indicating bleeding.\n\n* 
+**Cotton wool spots:** These are fluffy, white lesions representing retinal nerve fiber layer infarcts.\n\n*   **Macular edema:** Fluid accumulation in the macula,
+which can cause blurred vision and distortion.\n\n*   **Hyloids:** These are characteristic of retinal vein occlusion,
+appearing as bright yellow and white spots in the outer periphery of the retina.\n\n*  
+**Diffuse retinal opacities:** The overall retina appears cloudy and opaque.\n\nThese findings are strongly suggestive of a severe retinal vascular disease, most
+likely a retinal vein occlusion with subsequent retinal hemorrhages, edema, and neovascularization (although neovascularization is not overtly visible in this image).\n\nIt is important to note that this is just a preliminary 
+assessment based on a single image. A full diagnosis requires evaluation of the patient's history, clinical examination, and potentially further imaging. This is a critical eye condition."}
