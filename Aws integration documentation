@@ -803,3 +803,75 @@ assessment based on a single image. A full diagnosis requires evaluation of the 
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 Stopped the Instance. after going to instances in EC2
+
+
+
+
+----------------------x------------------------------x---------------------------------------x--------------------------------x--------------
+
+# Now my work is Integrating with stream lit.
+
+I went to instances in aws and clicked that instance and restarted it again.
+Successfully initiated starting of i-068e1a8b6761c7ee0
+Instance state
+Running
+
+New Public IPv4 address.
+3.108.7.140
+
+executed the following command in windows powershell.
+PS C:\Users\Ravi krishnan A.M> ssh -i "C:\Users\Ravi krishnan A.M\Downloads\my-key.pem" ubuntu@3.108.7.140
+Welcome to Ubuntu 22.04.5 LTS (GNU/Linux 6.8.0-1029-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Mon Jun 16 04:22:07 UTC 2025
+
+  System load:  0.06               Processes:             158
+  Usage of /:   92.5% of 38.58GB   Users logged in:       0
+  Memory usage: 2%                 IPv4 address for ens5: 172.31.18.225
+  Swap usage:   0%
+
+  => / is using 92.5% of 38.58GB
+
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+
+=============================================================================
+AMI Name: Deep Learning OSS Nvidia Driver AMI GPU PyTorch 2.7 (Ubuntu 22.04)
+Supported EC2 instances: G4dn, G5, G6, Gr6, G6e, P4, P4de, P5, P5e, P5en, P6-B200
+* To activate pre-built pytorch environment, run: 'source /opt/pytorch/bin/activate '
+NVIDIA driver version: 570.133.20
+CUDA versions available: cuda-12.8
+Default CUDA version is 12.8
+
+Release notes: https://docs.aws.amazon.com/dlami/latest/devguide/appendix-ami-release-notes.html
+AWS Deep Learning AMI Homepage: https://aws.amazon.com/machine-learning/amis/
+Developer Guide and Release Notes: https://docs.aws.amazon.com/dlami/latest/devguide/what-is-dlami.html
+Support: https://forums.aws.amazon.com/forum.jspa?forumID=263
+For a fully managed experience, check out Amazon SageMaker at https://aws.amazon.com/sagemaker
+=============================================================================
+Last login: Fri Jun 13 09:14:45 2025 from 137.97.182.162
+ubuntu@ip-172-31-18-225:~$
+
+Updated the Firewall for Streamlit-Done
+Go to Security Groups: In the AWS Console, navigate to "Security Groups".
+Find and Edit: Select the security group for your instance (launch-wizard-2 or similar) and click "Edit inbound rules".
+Add a New Rule:
+Click "Add rule".
+Type: Custom TCP
+Port range: 8501
+Source: For a demo with investors, it's safest to set the source to Anywhere-IPv4 (which is 0.0.0.0/0). This will allow them to access the link from any network.
+Saved Rules.
+ 
